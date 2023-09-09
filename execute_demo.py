@@ -22,7 +22,7 @@ print("input dataframe: \n", input_df.head())
 # convert the pandas dataframe to apache arrow RecordBatch.
 # it seems at this point rust does not have support for arrow tables (?)
 arrow_records = pa.RecordBatch.from_pandas(input_df)
-print("\narrow record batch:\n",arrow_records)
+print("\narrow record batch:\n", arrow_records)
 
 #
 # call our rust function

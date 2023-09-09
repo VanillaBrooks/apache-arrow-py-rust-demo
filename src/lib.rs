@@ -2,18 +2,18 @@ use std::path::PathBuf;
 
 use arrow::record_batch::RecordBatch;
 
+/// pure rust function. Tables an apache arrow RecordBatch and writes it to the specified path
 fn write_arrow_table(table: RecordBatch, to: PathBuf) {
     let writer = std::fs::File::create(to).unwrap();
+
     let mut arrow_writer = arrow::csv::WriterBuilder::new()
         .has_headers(true)
         .build(writer);
+
     arrow_writer.write(&table).unwrap();
 }
 
-/// A Python module implemented in Rust. The name of this function must match
-/// the `lib.name` setting in the `Cargo.toml`, else Python will not be able to
-/// import the module.
-
+/// container for all python code
 mod python {
     use super::RecordBatch;
     use pyo3::prelude::*;
@@ -25,7 +25,7 @@ mod python {
         Ok(())
     }
 
-    /// wrapper around crate::write_arrow_table
+    /// wrapper around crate::write_arrow_table. This is a function exported to python
     #[pyfunction]
     fn write_arrow_table(
         py_table: arrow::pyarrow::PyArrowType<RecordBatch>,
